@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+commonLabels:
+  variant: prod 
+  org: umich
+nameSuffix: -prod
+bases:
+- ../../base
+patchesJson6902:
+- target:
+    version: v1
+    kind: Route
+    name: web
+  path: hostname.yaml
+- target:
+    version: v1
+    kind: DeploymentConfig
+    name: web
+  path: deployment.yaml
+configMapGenerator:
+  - name: qualtrics-lti
+    behavior: replace
+    envs:
+    - secret/configmap-prod.properties

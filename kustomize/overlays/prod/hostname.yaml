@@ -1,0 +1,6 @@
+- op: replace
+  path: /spec/host
+  value: qualtrics-lti.tl.it.umich.edu
+- op: replace
+  path: /spec/to/name
+  value: qualtrics-lti-web-prod

@@ -1,0 +1,22 @@
+- op: replace
+  path: /spec/selector/variant
+  value: prod
+- op: replace
+  path: /spec/template/metadata/labels/variant
+  value: prod
+- op: replace
+  path: /spec/template/spec/containers/0/image
+  value: docker-registry.default.svc:5000/qualtrics-lti-dev/qualtrics-lti-dev:20220606
+- op: replace
+  path: /spec/template/spec/containers/0/volumeMounts/0/name
+  value: qualtrics-lti-web-prod
+- op: replace
+  path: /spec/template/spec/volumes/0/name
+  value: qualtrics-lti-web-prod
+- op: replace
+  path: /spec/template/spec/volumes/0/persistentVolumeClaim/claimName
+  value: qualtrics-lti-web-prod
+- op: remove
+  path: /spec/triggers
+
+

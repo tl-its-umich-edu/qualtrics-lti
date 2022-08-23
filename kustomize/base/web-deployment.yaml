@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  name: web
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    app: web
+    org: umich
+    project: qualtrics-lti
+    variant: dev
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: web
+        org: umich
+        project: qualtrics-lti
+        variant: dev
+    spec:
+      containers:
+      - name: web
+        image: docker-registry.default.svc:5000/qualtrics-lti-dev/qualtrics-lti-dev:latest
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: qualtrics-lti
+        resources:
+          limits:
+            cpu: 250m
+            memory: 1Gi
+        volumeMounts:
+            - mountPath: /var/www/html/storage
+              name: qualtrics-lti-web-dev
+      volumes:
+        - name: qualtrics-lti-web-dev
+          persistentVolumeClaim:
+            claimName: qualtrics-lti-web-dev
+  triggers:
+  - type: "ImageChange"
+    imageChangeParams:
+      automatic: true
+      from:
+        kind: "ImageStreamTag"
+        name: "qualtrics-lti-dev:latest"
+        namespace: "qualtrics-lti-dev"
+      containerNames:
+      - "web"
